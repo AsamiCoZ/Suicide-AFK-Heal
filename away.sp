@@ -8,10 +8,10 @@ new Time[33];
 
 public Plugin:myinfo = 
 {
-	name = "Suicide&AFK&Heal"
-	author = "Coralare"
-	description = ""
-	version = "1.2.0"
+	name = "Suicide&AFK&Heal",
+	author = "Coralare",
+	description = "",
+	version = "1.2.0",
 	url = "https://github.com/AsamiCoZ/Suicide-AFK-Heal"
 }
 
@@ -32,7 +32,7 @@ public Action:AFKTurnClientToSpectate(client, args)
 	if(!Time[client])
 	{
 		ChangeClientTeam(client, 1);
-		Time[client] = 35;
+		Time[client] = 30;
 		CreateTimer(1.0, Count, client, TIMER_REPEAT);
 		/*CreateTimer(GetRandomFloat(0.1, 0.5), CheckClients, client, TIMER_REPEAT);*/
 		CreateTimer(GetRandomFloat(0.001, 0.002), Check, client, TIMER_REPEAT);
@@ -63,11 +63,13 @@ public Action:AFKTurnClientToSurvivors(client, args)
 
 public Action:Check(Handle:timer, client)
 {
+	if(!Time[client]) return Plugin_Stop;
 	if(GetClientTeam(client) == 2 && Time[client] != 0)
 	{
 		ChangeClientTeam(client, 1);
 		PrintToChat(client, "\x04You should wait %iseconds are able to join survivor~", Time[client]);
 	}
+	return Plugin_Continue;
 }
 
 public Action:Kill_Me(client, args)
